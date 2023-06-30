@@ -1,0 +1,178 @@
+{
+    "_type": "export",
+    "__export_format": 4,
+    "__export_date": "2023-06-30T09:30:48.907Z",
+    "__export_source": "insomnia.desktop.app:v2022.4.2",
+    "resources": [
+        {
+            "_id": "req_bd34317abf9340cb8f9e97aafb9e0470",
+            "parentId": "wrk_789f5ba05df941a99b71e4f968f377e6",
+            "modified": 1688117406175,
+            "created": 1688113668311,
+            "url": "localhost:8080/vehicle/register",
+            "name": "Register Vehicle",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"vehicleId\": \"XD999XD\",\n\t\"vehicleType\": \"Car\"\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_8640399a9498416f8d345264aacafb03"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1685457939876,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "wrk_789f5ba05df941a99b71e4f968f377e6",
+            "parentId": null,
+            "modified": 1688113668305,
+            "created": 1688113668305,
+            "name": "Drive Me Crazy Rentals",
+            "description": "",
+            "scope": "collection",
+            "_type": "workspace"
+        },
+        {
+            "_id": "req_309a4d605e8642f1a962da354e40400a",
+            "parentId": "wrk_789f5ba05df941a99b71e4f968f377e6",
+            "modified": 1688117407705,
+            "created": 1688113867278,
+            "url": "localhost:8080/customer/register",
+            "name": "Register Customer",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"customerId\": \"pippo@example.it\",\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Wick\"\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_8640399a9498416f8d345264aacafb03"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1679148246178,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_3775e29b4f6240229984faf8435431fe",
+            "parentId": "wrk_789f5ba05df941a99b71e4f968f377e6",
+            "modified": 1688117408166,
+            "created": 1688116596940,
+            "url": "localhost:8080/rent/start",
+            "name": "Rent Start",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"customerId\": \"pippo@example.it\",\n\t\"vehicleType\": \"Car\",\n\t\"startDate\": \"2023-06-30T11:00:00Z\"\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_8640399a9498416f8d345264aacafb03"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1675993399329,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_bcb0e618415848b7bbdcad50eaab0832",
+            "parentId": "wrk_789f5ba05df941a99b71e4f968f377e6",
+            "modified": 1688117415835,
+            "created": 1688116960839,
+            "url": "localhost:8080/rent/end",
+            "name": "Rent End",
+            "description": "",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/json",
+                "text": "{\n\t\"customerId\": \"pippo@example.it\",\n\t\"vehicleId\": \"XD999XD\",\n\t\"endDate\": \"2023-06-30T11:00:00Z\"\n}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json",
+                    "id": "pair_8640399a9498416f8d345264aacafb03"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1674415975904.5,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "env_e1de0ac8faa2486c8fe84100f352e345",
+            "parentId": "wrk_789f5ba05df941a99b71e4f968f377e6",
+            "modified": 1688113668306,
+            "created": 1688113668306,
+            "name": "Base Environment",
+            "data": {},
+            "dataPropertyOrder": null,
+            "color": null,
+            "isPrivate": false,
+            "metaSortKey": 1685457936231,
+            "_type": "environment"
+        },
+        {
+            "_id": "jar_9156dd4604644c898743d81fef2d648a",
+            "parentId": "wrk_789f5ba05df941a99b71e4f968f377e6",
+            "modified": 1688113668309,
+            "created": 1688113668309,
+            "name": "Default Jar",
+            "cookies": [],
+            "_type": "cookie_jar"
+        },
+        {
+            "_id": "spc_3efd40ee6ce442c483d948fb991fe246",
+            "parentId": "wrk_789f5ba05df941a99b71e4f968f377e6",
+            "modified": 1688113668324,
+            "created": 1688113668310,
+            "fileName": "Drive Me Crazy Rentals",
+            "contents": "",
+            "contentType": "yaml",
+            "_type": "api_spec"
+        }
+    ]
+}
