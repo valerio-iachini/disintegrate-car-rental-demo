@@ -1,5 +1,5 @@
 [package]
-name = "banking"
+name = "car-rental"
 version = "0.1.0"
 edition = "2021"
 publish = false
