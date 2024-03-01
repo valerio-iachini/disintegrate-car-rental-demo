@@ -1,58 +1,8 @@
-use crate::domain::{DomainEvent, Email, PlateNumber, VehicleType};
+use crate::domain::DomainEvent;
 use async_trait::async_trait;
-use chrono::{DateTime, Utc};
+
 use disintegrate::{query, EventListener, PersistedEvent, StreamQuery};
-use sqlx::{FromRow, PgPool};
-
-#[derive(Clone)]
-pub struct Repository {
-    pool: PgPool,
-}
-
-impl Repository {
-    pub fn new(pool: PgPool) -> Self {
-        Self { pool }
-    }
-
-    pub async fn vehicles(&self) -> Result<Vec<Vehicle>, sqlx::Error> {
-        sqlx::query_as::<_, Vehicle>("SELECT * FROM vehicle")
-            .fetch_all(&self.pool)
-            .await
-    }
-
-    pub async fn customers(&self) -> Result<Vec<Customer>, sqlx::Error> {
-        sqlx::query_as::<_, Customer>("SELECT * FROM customer")
-            .fetch_all(&self.pool)
-            .await
-    }
-
-    pub async fn rents(&self) -> Result<Vec<Rent>, sqlx::Error> {
-        sqlx::query_as::<_, Rent>("SELECT * FROM rent")
-            .fetch_all(&self.pool)
-            .await
-    }
-}
-
-#[derive(FromRow)]
-pub struct Vehicle {
-    pub vehicle_id: String,
-    pub vehicle_type: String,
-}
-
-#[derive(FromRow)]
-pub struct Customer {
-    pub customer_id: String,
-    pub first_name: String,
-    pub last_name: String,
-}
-
-#[derive(FromRow)]
-pub struct Rent {
-    pub customer_id: String,
-    pub vehicle_id: String,
-    pub start_date: DateTime<Utc>,
-    pub end_date: Option<DateTime<Utc>>,
-}
+use sqlx::{PgPool};
 
 pub struct ReadModelProjection {
     query: StreamQuery<DomainEvent>,
@@ -62,34 +12,31 @@ pub struct ReadModelProjection {
 impl ReadModelProjection {
     pub async fn new(pool: PgPool) -> Result<Self, sqlx::Error> {
         sqlx::query(
-            r#"
-                CREATE TABLE IF NOT EXISTS vehicle (
-                    vehicle_id TEXT PRIMARY KEY,
-                    vehicle_type TEXT
-                )"#,
+            r#"CREATE TABLE IF NOT EXISTS vehicle (
+                vehicle_id TEXT PRIMARY KEY,
+                vehicle_type TEXT
+            )"#,
         )
         .execute(&pool)
         .await?;
 
         sqlx::query(
-            r#"
-                CREATE TABLE IF NOT EXISTS customer (
-                    customer_id TEXT PRIMARY KEY,
-                    fist_name TEXT,
-                    last_name TEXT
-           )"#,
+            r#"CREATE TABLE IF NOT EXISTS customer (
+                customer_id TEXT PRIMARY KEY,
+                first_name TEXT,
+                last_name TEXT
+            )"#,
         )
         .execute(&pool)
         .await?;
         sqlx::query(
-            r#"
-            CREATE TABLE IF NOT EXISTS rent (
-                customer_Id TEXT,
+            r#"CREATE TABLE IF NOT EXISTS rent (
+                customer_id TEXT,
                 vehicle_id TEXT,
-                star_date timestamptz, 
+                start_date timestamptz, 
                 end_date timestamptz NULL,
                 PRIMARY KEY(customer_id, vehicle_id)
-        )"#,
+            )"#,
         )
         .execute(&pool)
         .await?;
@@ -113,8 +60,59 @@ impl EventListener<DomainEvent> for ReadModelProjection {
 
     async fn handle(&self, event: PersistedEvent<DomainEvent>) -> Result<(), Self::Error> {
         match event.into_inner() {
-            _ => {}
-        }
+            DomainEvent::CustomerRegistered {
+                customer_id,
+                first_name,
+                last_name,
+            } =>  sqlx::query(
+                    "INSERT INTO customer (customer_id, first_name, last_name) VALUES($1, $2, $3)",
+                )
+                .bind(customer_id)
+                .bind(first_name)
+                .bind(last_name)
+                .execute(&self.pool)
+                .await
+                .unwrap(),
+            DomainEvent::VehicleAdded {
+                vehicle_id,
+                vehicle_type,
+            } => sqlx::query(
+                    "INSERT INTO vehicle (vehicle_id, vehicle_type) VALUES($1, $2)",
+                )
+                .bind(vehicle_id)
+                .bind(vehicle_type.to_string())
+                .execute(&self.pool)
+                .await
+                .unwrap(),
+            DomainEvent::VehicleRented {
+                customer_id,
+                vehicle_id,
+                vehicle_type: _,
+                start_date,
+            } => sqlx::query(
+                    "INSERT INTO rent (customer_id, vehicle_id, start_date) VALUES($1, $2, $3)",
+                )
+                .bind(customer_id)
+                .bind(vehicle_id)
+                .bind(start_date)
+                .execute(&self.pool)
+                .await
+                .unwrap(),
+            DomainEvent::VehicleReturned {
+                customer_id,
+                vehicle_id,
+                vehicle_type: _,
+                returned_date,
+            } => sqlx::query(
+                    "UPDATE rent SET end_date = $3 where customer_id = $1 and vehicle_id = $2 and end_date is null",
+                )
+                .bind(customer_id)
+                .bind(vehicle_id)
+                .bind(returned_date)
+                .execute(&self.pool)
+                .await
+                .unwrap(),
+        };
         Ok(())
     }
 }
