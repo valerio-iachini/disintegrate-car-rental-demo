@@ -2,7 +2,7 @@ use crate::domain::DomainEvent;
 use async_trait::async_trait;
 
 use disintegrate::{query, EventListener, PersistedEvent, StreamQuery};
-use sqlx::{PgPool};
+use sqlx::PgPool;
 
 pub struct ReadModelProjection {
     query: StreamQuery<DomainEvent>,

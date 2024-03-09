@@ -20,7 +20,7 @@ use domain::DomainEvent;
 use sqlx::{postgres::PgConnectOptions, PgPool};
 use tokio::signal;
 
-use crate::application::{EndRent, RegisterCustomer, RegisterVehicle, StartRent};
+use crate::domain::{EndRent, RegisterCustomer, RegisterVehicle, StartRent};
 
 type EventStore = PgEventStore<DomainEvent, disintegrate::serde::json::Json<DomainEvent>>;
 
