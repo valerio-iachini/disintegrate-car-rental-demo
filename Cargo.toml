@@ -5,8 +5,8 @@ edition = "2021"
 publish = false
 
 [dependencies]
-disintegrate = { version = "0.7.3", features = ["macros", "serde-json"] }
-disintegrate-postgres = { version = "0.7.3", features = ["listener"]}
+disintegrate = { version = "0.8.0", features = ["macros", "serde-json"] }
+disintegrate-postgres = { version = "0.8.0", features = ["listener"]}
 tokio = { version = "1.13.0", features = [
     "macros",
     "rt-multi-thread",

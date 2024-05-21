@@ -9,9 +9,9 @@ use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 #[derive(Debug, Clone, PartialEq, Eq, Event, Serialize, Deserialize)]
-#[group(CustomerEvent, [CustomerRegistered])]
-#[group(VehicleEvent, [VehicleAdded])]
-#[group(RentEvent, [VehicleAdded, VehicleRented, VehicleReturned])]
+#[stream(CustomerEvent, [CustomerRegistered])]
+#[stream(VehicleEvent, [VehicleAdded])]
+#[stream(RentEvent, [VehicleAdded, VehicleRented, VehicleReturned])]
 pub enum DomainEvent {
     CustomerRegistered {
         #[id]
